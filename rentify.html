@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rentify</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    header {
+      background-color: #4CAF50;
+      color: white;
+      text-align: center;
+      padding: 1em 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin: 5px 0;
+      box-sizing: border-box;
+    }
+    .form-group textarea {
+      resize: vertical;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .property-list {
+      margin-top: 20px;
+    }
+    .property-item {
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+    }
+    .property-item h3 {
+      margin-top: 0;
+    }
+    .property-item button {
+      float: right;
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Rentify - Where Renting Meets Simplicity</h1>
+</header>
+
+<div class="container">
+  <h2>Register</h2>
+  <div class="form-group">
+    <label for="firstName">First Name</label>
+    <input type="text" id="firstName" placeholder="First Name">
+  </div>
+  <div class="form-group">
+    <label for="lastName">Last Name</label>
+    <input type="text" id="lastName" placeholder="Last Name">
+  </div>
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="email" id="email" placeholder="Email">
+  </div>
+  <div class="form-group">
+    <label for="phoneNumber">Phone Number</label>
+    <input type="text" id="phoneNumber" placeholder="Phone Number">
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" id="password" placeholder="Password">
+  </div>
+  <div class="form-group">
+    <label for="isSeller">Are you a seller?</label>
+    <input type="checkbox" id="isSeller">
+  </div>
+  <button onclick="registerUser()">Register</button>
+
+  <h2>Login</h2>
+  <div class="form-group">
+    <label for="loginEmail">Email</label>
+    <input type="email" id="loginEmail" placeholder="Email">
+  </div>
+  <div class="form-group">
+    <label for="loginPassword">Password</label>
+    <input type="password" id="loginPassword" placeholder="Password">
+  </div>
+  <button onclick="loginUser()">Login</button>
+
+  <div id="property-section" style="display: none;">
+    <h2>Post Property</h2>
+    <div class="form-group">
+      <label for="place">Place</label>
+      <input type="text" id="place" placeholder="Place">
+    </div>
+    <div class="form-group">
+      <label for="area">Area</label>
+      <input type="text" id="area" placeholder="Area">
+    </div>
+    <div class="form-group">
+      <label for="bedrooms">Bedrooms</label>
+      <input type="number" id="bedrooms" placeholder="Bedrooms">
+    </div>
+    <div class="form-group">
+      <label for="bathrooms">Bathrooms</label>
+      <input type="number" id="bathrooms" placeholder="Bathrooms">
+    </div>
+    <div class="form-group">
+      <label for="nearbyHospitals">Nearby Hospitals</label>
+      <input type="text" id="nearbyHospitals" placeholder="Nearby Hospitals">
+    </div>
+    <div class="form-group">
+      <label for="nearbyColleges">Nearby Colleges</label>
+      <input type="text" id="nearbyColleges" placeholder="Nearby Colleges">
+    </div>
+    <button onclick="postProperty()">Post Property</button>
+
+    <h2>Available Properties</h2>
+    <div class="property-list" id="property-list">
+      <!-- Property items will be appended here -->
+    </div>
+  </div>
+</div>
+
+<script>
+  let currentUser = null;
+  let properties = [];
+
+  function registerUser() {
+    const firstName = document.getElementById('firstName').value;
+    const lastName = document.getElementById('lastName').value;
+    const email = document.getElementById('email').value;
+    const phoneNumber = document.getElementById('phoneNumber').value;
+    const password = document.getElementById('password').value;
+    const isSeller = document.getElementById('isSeller').checked;
+
+    currentUser = { firstName, lastName, email, phoneNumber, password, isSeller };
+    alert('User registered successfully');
+  }
+
+  function loginUser() {
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+
+    if (currentUser && currentUser.email === email && currentUser.password === password) {
+      alert('Login successful');
+      document.getElementById('property-section').style.display = 'block';
+    } else {
+      alert('Invalid credentials');
+    }
+  }
+
+  function postProperty() {
+    const place = document.getElementById('place').value;
+    const area = document.getElementById('area').value;
+    const bedrooms = document.getElementById('bedrooms').value;
+    const bathrooms = document.getElementById('bathrooms').value;
+    const nearbyHospitals = document.getElementById('nearbyHospitals').value;
+    const nearbyColleges = document.getElementById('nearbyColleges').value;
+
+    const property = { place, area, bedrooms, bathrooms, nearbyHospitals, nearbyColleges };
+    properties.push(property);
+    displayProperties();
+  }
+
+  function displayProperties() {
+    const propertyList = document.getElementById('property-list');
+    propertyList.innerHTML = '';
+
+    properties.forEach((property, index) => {
+      const propertyItem = document.createElement('div');
+      propertyItem.className = 'property-item';
+
+      propertyItem.innerHTML = `
+        <h3>${property.place}</h3>
+        <p>${property.area} sq ft</p>
+        <p>${property.bedrooms} bedrooms, ${property.bathrooms} bathrooms</p>
+        <p>Nearby Hospitals: ${property.nearbyHospitals}</p>
+        <p>Nearby Colleges: ${property.nearbyColleges}</p>
+        <button onclick="expressInterest(${index})">I'm Interested</button>
+        <button onclick="deleteProperty(${index})">Delete</button>
+      `;
+
+      propertyList.appendChild(propertyItem);
+    });
+  }
+
+  function expressInterest(index) {
+    alert(`Interested in property: ${properties[index].place}`);
+  }
+
+  function deleteProperty(index) {
+    properties.splice(index, 1);
+    displayProperties();
+  }
+</script>
+
+</body>
+</html>
